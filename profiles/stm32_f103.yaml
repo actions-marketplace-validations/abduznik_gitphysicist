@@ -1,0 +1,7 @@
+device: "STM32F103 (Blue Pill)"
+architecture: "ARM Cortex-M3"
+constraints:
+  - "NO FPU: This chip has no Floating Point Unit. Flag ALL usage of float/double in math operations."
+  - "RAM LIMIT: 20KB. Flag any recursion or large static arrays."
+  - "TIMING: No blocking delays > 5ms in interrupt handlers."
+  - "LOGIC: Pins are 3.3V. Warn if code suggests 5V logic usage."

@@ -1,0 +1,21 @@
+name: 'GitPhysicist Hardware Check'
+description: 'AI-powered hardware constraint enforcement for embedded code.'
+author: 'Abduznik'
+inputs:
+  google_api_key:
+    description: 'Google GenAI API Key'
+    required: true
+  hardware_profile:
+    description: 'Path to the hardware profile YAML'
+    required: false
+    default: 'profiles/stm32_f103.yaml'
+  github_token:
+    description: 'GitHub Token for posting comments'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    GOOGLE_API_KEY: ${{ inputs.google_api_key }}
+    HARDWARE_PROFILE_PATH: ${{ inputs.hardware_profile }}
+    GITHUB_TOKEN: ${{ inputs.github_token }}
