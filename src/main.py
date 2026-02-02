@@ -44,7 +44,7 @@ def get_pr_diff(token):
     
     return pr, diffs
 
-def analyze_with_gemma(diff, profile, api_key):
+def analyze_with_gemma(diff, profile, api_key, verbose=False):
     client = genai.Client(api_key=api_key)
     
     system_prompt = f"""
@@ -59,6 +59,10 @@ def analyze_with_gemma(diff, profile, api_key):
     Be brief. Use technical language. If code is safe, say "HARDWARE CHECK PASSED".
     """
 
+    if verbose:
+        print("System prompt:")
+        print(system_prompt)
+
     prompt = f"{system_prompt}\n\nCODE DIFF:\n{diff}"
 
     response = client.models.generate_content(
@@ -68,6 +72,11 @@ def analyze_with_gemma(diff, profile, api_key):
             temperature=0.2,
         )
     )
+
+    if verbose:
+        print("Raw API response:")
+        print(response)
+
     return response.text
 
 def main():

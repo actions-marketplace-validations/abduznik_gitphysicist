@@ -7,11 +7,19 @@ sys.path.append(os.path.abspath('src'))
 
 from main import analyze_with_gemma, load_profile
 
+def key_masking(key: str) -> str:
+    if not key:
+        return "<empty>"
+    if len(key) <= 8:
+        return key
+    return f"{key[:4]}...{key[-4:]}"
+
 def main():
     parser = argparse.ArgumentParser(description="Run GitPhysicist on a local file.")
     parser.add_argument("file", help="Path to the source code file to check")
     parser.add_argument("--profile", default="profiles/stm32_f103.yaml", help="Path to hardware profile YAML")
-    
+    parser.add_argument("-v", "--verbose", action="store_true", help="Print debug information")
+
     args = parser.parse_args()
 
     # 1. Check API Key
@@ -20,6 +28,9 @@ def main():
         print("::error::GOOGLE_API_KEY not found in environment variables.")
         print("Run: export GOOGLE_API_KEY='your_key'")
         sys.exit(1)
+
+    if args.verbose:
+        print(f"Using API key: {key_masking(api_key)}")
 
     # 2. Load Profile
     if not os.path.exists(args.profile):
@@ -42,7 +53,7 @@ def main():
     # 4. Analyze
     print(f"Checking {args.file} against {profile.get('device', 'Unknown Device')}...")
     try:
-        report = analyze_with_gemma(diff_context, profile, api_key)
+        report = analyze_with_gemma(diff_context, profile, api_key, verbose=args.verbose)
         print("\n" + "="*40)
         print("REPORT")
         print("="*40)
