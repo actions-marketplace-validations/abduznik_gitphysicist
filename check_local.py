@@ -40,7 +40,7 @@ def main():
     diff_context = f"\n--- File: {args.file} (Local Check) ---\n{code_content}\n"
 
     # 4. Analyze
-    print(f"⚛️  Checking {args.file} against {profile.get('device', 'Unknown Device')}...")
+    print(f"Checking {args.file} against {profile.get('device', 'Unknown Device')}...")
     try:
         report = analyze_with_gemma(diff_context, profile, api_key)
         print("\n" + "="*40)
