@@ -1,0 +1,7 @@
+device: "ESP32 (Xtensa LX6)"
+architecture: "Xtensa 32-bit LX6"
+constraints:
+  - "ISR ATTRIBUTE: Interrupt Service Routines (ISRs) MUST be decorated with `IRAM_ATTR` to ensure they run from RAM. If the cache is disabled (e.g., during Flash writes), non-IRAM code will crash."
+  - "WATCHDOG: Long-running loops (especially `while(1)`) must yield control using `vTaskDelay()` or `taskYIELD()` to prevent the Task Watchdog Timer (TWDT) from resetting the CPU."
+  - "Concurrency: If using `xTaskCreatePinnedToCore`, ensure shared resources are protected by Mutexes or Spinlocks, as this is a dual-core system."
+  - "BLOCKING: Do not use `delay()` or `ets_delay_us()` inside interrupt handlers."

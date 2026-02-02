@@ -1,0 +1,7 @@
+device: "Raspberry Pi Pico (RP2040)"
+architecture: "Dual-core ARM Cortex-M0+"
+constraints:
+  - "NO FPU: The Cortex-M0+ has NO hardware Floating Point Unit. Heavy use of `float` or `double` in ISRs or fast loops will be extremely slow (software emulation). Prefer fixed-point arithmetic."
+  - "FLASH LATENCY: Time-critical functions (e.g., fast bit-banging, tight ISRs) must be marked with `__not_in_flash_func()` to execute from RAM and avoid flash cache misses."
+  - "MULTICORE SAFETY: Since this is a dual-core chip, any global variable accessed by both Core0 and Core1 must be protected using `spin_lock` or `mutex`."
+  - "DMA: Ensure destination pointers for DMA transfers are aligned to the transfer size (word/half-word)."

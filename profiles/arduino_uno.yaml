@@ -1,0 +1,5 @@
+device: "Arduino Uno (ATmega328P)"
+architecture: "AVR 8-bit"
+constraints:
+  - "PWM QUALITY: Control loops and fading logic must use floating-point intermediate calculations to avoid visible stepping or aliasing artifacts."
+  - "TIMING: No delay() inside critical control loops."
