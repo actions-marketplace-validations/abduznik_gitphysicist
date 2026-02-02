@@ -59,16 +59,12 @@ def analyze_with_gemma(diff, profile, api_key):
     Be brief. Use technical language. If code is safe, say "HARDWARE CHECK PASSED".
     """
 
+    prompt = f"{system_prompt}\n\nCODE DIFF:\n{diff}"
+
     response = client.models.generate_content(
         model="gemma-3-27b-it",
-        contents=[
-            types.Content(
-                role="user",
-                parts=[types.Part.from_text(f"CODE DIFF:\n{diff}")]
-            )
-        ],
+        contents=prompt,
         config=types.GenerateContentConfig(
-            system_instruction=system_prompt,
             temperature=0.2,
         )
     )
@@ -101,7 +97,7 @@ def main():
     review = analyze_with_gemma(diff_content, profile, api_key)
     
     print("Posting comment to PR...")
-    pr.create_issue_comment(f"## ⚛️ GitPhysicist Report\n**Target:** {profile['device']}\n\n{review}")
+    pr.create_issue_comment(f"## gitphysicist Report\n**Target:** {profile['device']}\n\n{review}")
 
 if __name__ == "__main__":
     main()
